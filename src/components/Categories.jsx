@@ -15,10 +15,13 @@ function Categories() {
   return (
     <div className="categories">
       <ul>
+        {categories.map((value, index) => (
+          <li onClick={() => onClickCategory(index)} className={activeIndex === index ? 'active' : ''}>
+            {value}
+          </li>
+        ))}
+        {/* вызываем анонимную ф-ю чтобы не было зацикливания(постоянного редеринга) */}
         {/* onClick={() => onClickCategory()}  делаем анонимную ф-ию чтобы избежать постоянных перерисовок*/}
-        {/* <li onClick={() => onClickCategory()} className="active">
-          Все
-        </li> */}
       </ul>
     </div>
   )
