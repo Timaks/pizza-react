@@ -14,19 +14,14 @@ function App() {
         <div className="content">
           <div className="container">
             <div className="content__top">
-              <Categories />
+              {/* <Categories /> */}
               <Sort />
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
               {pizzas.map((obj) => (
-                <PizzaBlock
-                  title={obj.title}
-                  price={obj.price}
-                  imageUrl={obj.imageUrl}
-                  sizes={obj.sizes}
-                  types={obj.types}
-                />
+                // если в объекте названия одинаковые то сокращаем
+                <PizzaBlock key={obj.id} {...obj} />
               ))}
             </div>
           </div>
