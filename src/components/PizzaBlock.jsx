@@ -1,31 +1,29 @@
 import React from 'react'
 
-function PizzaBlock({ title, price, imageUrl}) {
- 
+function PizzaBlock({ title, price, imageUrl, sizes, types }) {
+    const [activeType, setActiveType] = React.useState(0)
+    const [activeSize, setActiveSize] = React.useState(0)
+    const typeNames = ['тонкое', 'традиционное']
   return (
     <div className="pizza-block">
-      <img
-        className="pizza-block__image"
-        src={imageUrl}
-        alt="Pizza"
-      />
+      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          <li className="active">тонкое</li>
-          <li>традиционное</li>
+            {/* таким образом вывели в строку наши индексы(где то один тип, где-то два) */}
+        {types.map((typeID) => (
+            <li onClick={() => setActiveType(typeID)} className={activeType === typeID ? 'active' : ''}>{typeNames[typeID]}</li>
+          ))}
         </ul>
         <ul>
-          <li className="active">26 см.</li>
-          <li>30 см.</li>
-          <li>40 см.</li>
+          {sizes.map((size, index) => (
+            <li onClick={() => setActiveSize(index)} className={activeSize === index ? 'active' : ''}>{size}</li>
+          ))}
         </ul>
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <button
-          className="button button--outline button--add"
-        >
+        <button className="button button--outline button--add">
           <svg
             width="12"
             height="12"
