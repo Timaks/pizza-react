@@ -18,8 +18,9 @@ function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>популярности</span>
+        <span onClick={()=>setOpen(!open)}>популярности</span>
       </div>
+      {/* Можно использовать тернарный оператор ? :, но без if только в олну строку выражение */}
       {open && (
         <div className="sort__popup">
           <ul>
