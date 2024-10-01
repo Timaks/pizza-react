@@ -11,13 +11,13 @@ function App() {
   // https://66fab3a48583ac93b4098801.mockapi.io/items
 
   // Будет постоянная перерисовка, чтобы не было используем хук эффект
-  fetch('https://66fab3a48583ac93b4098801.mockapi.io/items')
-    .then((res) => {
-      return res.json()
-    })
-    .then((arr) => {
-      setItems(arr)
-    })
+  React.useEffect(() => {
+    fetch('https://66fab3a48583ac93b4098801.mockapi.io/items')
+      .then((res) => res.json())
+      .then((arr) => {
+        setItems(arr)
+      })
+  }, [])
   return (
     <div className="App">
       <div className="wrapper">
