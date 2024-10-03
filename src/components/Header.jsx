@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import logoPizza from '../assets/img/pizza-logo.svg'
 //два способ передать лого, через папку public/img или же импорт
 
@@ -5,7 +6,7 @@ function Header() {
   return (
     <div className='header'>
       <div className='container'>
-        <a href='/'>
+        <Link to='/'>
           <div className='header__logo'>
             <img width='38' src={logoPizza} alt='Pizza logo' />
             <div>
@@ -13,9 +14,9 @@ function Header() {
               <p>самая вкусная пицца во вселенной</p>
             </div>
           </div>
-        </a>
+        </Link>
         <div className='header__cart'>
-          <a href='/cart.html' className='button button--cart'>
+          <Link to='/cart' className='button button--cart'>
             <span>520 ₽</span>
             <div className='button__delimiter'></div>
             <svg
@@ -48,7 +49,7 @@ function Header() {
               />
             </svg>
             <span>3</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
