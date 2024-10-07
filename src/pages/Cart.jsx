@@ -3,21 +3,21 @@ import { Link } from 'react-router-dom'
 
 const Cart = () => {
   return (
-    <div className=" container--cart">
-      <div class="cart">
-        <div class="cart__top">
-          <h2 class="content__title">Корзина</h2>
-          <div class="cart__clear">
+    <div className=' container--cart'>
+      <div className='cart'>
+        <div className='cart__top'>
+          <h2 className='content__title'>Корзина</h2>
+          <div className='cart__clear'>
             {/* <% include ../../public/img/trash.svg %> */}
             <span>Очистить корзину</span>
           </div>
         </div>
-        <div class="content__items">
+        <div className='content__items'>
           {/* <% include components/cart-item.ejs %> <% include components/cart-item.ejs %> <%
       include components/cart-item.ejs %> <% include components/cart-item.ejs %> */}
         </div>
-        <div class="cart__bottom">
-          <div class="cart__bottom-details">
+        <div className='cart__bottom'>
+          <div className='cart__bottom-details'>
             <span>
               {' '}
               Всего пицц: <b>3 шт.</b>{' '}
@@ -27,12 +27,15 @@ const Cart = () => {
               Сумма заказа: <b>900 ₽</b>{' '}
             </span>
           </div>
-          <div class="cart__bottom-buttons">
-            <Link to="/" class="button button--outline button--add go-back-btn">
+          <div className='cart__bottom-buttons'>
+            <Link
+              to='/'
+              className='button button--outline button--add go-back-btn'
+            >
               {/* <% include ../../public/img/grey-arrow-left.svg %> */}
               <span>Вернуться назад</span>
             </Link>
-            <div class="button pay-btn">
+            <div className='button pay-btn'>
               <span>Оплатить сейчас</span>
             </div>
           </div>
