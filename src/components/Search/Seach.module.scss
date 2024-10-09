@@ -1,6 +1,6 @@
 .root {
   position: relative;
-//   margin-right: auto;
+  //   margin-right: auto;
 }
 .icon {
   width: 22px;
@@ -20,5 +20,18 @@
 
   &:focus {
     border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+}
+
+.clearIcon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.3;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
   }
 }
