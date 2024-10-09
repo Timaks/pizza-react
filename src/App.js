@@ -9,7 +9,9 @@ import './scss/app.scss'
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
+  // пропс дриллинг, передача св-в компонентам, из app в Header, потом Search и там используем
   const [searchValue, setSearchValue] = React.useState('')
+
   return (
     <div className="App">
       <div className="wrapper">
