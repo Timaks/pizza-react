@@ -21,28 +21,20 @@ const Home = ({ searchValue }) => {
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
     const sortBy = sortType.sortProperty.replace('-', '')
     const category = categoryId > 0 ? `category=${categoryId}` : ''
+    const search = searchValue ? `&search=${searchValue}` : ''
+
     fetch(
-      `https://66fab3a48583ac93b4098801.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`
+      `https://66fab3a48583ac93b4098801.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`
     )
       .then((res) => res.json())
       .then((arr) => {
         setItems(arr)
         setIsLoading(false)
       })
-    //Перекидывает наверх сайта и то что [] сдедить за этой переменной и ее изменениями
     window.scrollTo(0, 0)
-  }, [categoryId, sortType])
+  }, [categoryId, sortType, searchValue])
 
-  const pizzas = items
-    .filter((obj) => {
-      //(фильтруем) если в obj.title содержится чтото из searchValue, то оставляем это в
-      //массиве, иначе убираем(делаем все в нижнем регистре, чтобы при поиске выводилось все)
-      if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
-        return true
-      }
-      return false
-    })
-    .map((obj) => <PizzaBlock key={obj.id} {...obj} />)
+  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ))
