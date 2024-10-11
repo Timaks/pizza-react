@@ -5,8 +5,12 @@ import PizzaBlock from '../components/PizzaBlock'
 import Sort from '../components/Sort'
 import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
+import { SearchContext } from '../App'
 
-const Home = ({ searchValue }) => {
+const Home = () => {
+  // нужен только searchValue для получения данных , изменение не надо
+  // Следи за изменением контекста, и перерисуется с новыми данными
+  const { searchValue } = React.useContext(SearchContext)
   const [items, setItems] = React.useState([])
   const [isLoading, setIsLoading] = React.useState(true)
   // Передаем состояние из категории и сортировки
