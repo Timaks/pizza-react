@@ -15,6 +15,9 @@ const filterSlice = createSlice({
   initialState,
   //   данные стейта изменяются при помощи редьюсеров (action-действие)
   reducers: {
+    setCategoryId(state, action) {
+      state.categoryId = action.payload
+    },
     setSort(state, action) {
       state.sort = action.payload
     },
