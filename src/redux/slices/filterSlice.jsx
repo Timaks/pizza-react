@@ -15,13 +15,13 @@ const filterSlice = createSlice({
   initialState,
   //   данные стейта изменяются при помощи редьюсеров (action-действие)
   reducers: {
-    setCategoryId(state, action) {
-      state.categoryId = action.payload
+    setSort(state, action) {
+      state.sort = action.payload
     },
   },
 })
 // вытаскиваем то. что в reducers
-export const { setCategoryId } = filterSlice.actions
+export const { setCategoryId, setSort } = filterSlice.actions
 
 // экспортируем reducer - база
 export default filterSlice.reducer
