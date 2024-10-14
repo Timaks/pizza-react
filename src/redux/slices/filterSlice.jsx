@@ -11,7 +11,7 @@ const initialState = {
 }
 // сам слайс, тут логика обработки наших данных
 const filterSlice = createSlice({
-  name: 'filter',
+  name: 'filters',
   initialState,
   //   данные стейта изменяются при помощи редьюсеров (action-действие)
   reducers: {
