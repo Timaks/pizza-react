@@ -1,11 +1,39 @@
 import React from 'react'
 
-import styles from './Seach.module.scss'
+import debounce from 'lodash.debounce'
 import { SearchContext } from '../../App'
 
+import styles from './Seach.module.scss'
+
 const Search = () => {
-  // передаем переменную из App
-  const { searchValue, setSearchValue } = React.useContext(SearchContext)
+  // Быстрое отображение данных инпута
+  const [value, setValue] = React.useState('')
+
+  // передаем переменную из App ---- отображение данных с поиска
+  const { setSearchValue } = React.useContext(SearchContext)
+
+  const inputRef = React.useRef()
+
+  const onClickClear = () => {
+    setSearchValue('')
+    setValue('')
+    inputRef.current.focus()
+  }
+
+  //React.useCallback вернет функцию... debounce - отложенное выполнение функции
+  const updateSearchValue = React.useCallback(
+    debounce((str) => {
+      setSearchValue(str)
+    }, 300),
+    // вызываем один раз при рендере(как useEffect)
+    []
+  )
+
+  const onChangeInput = (event) => {
+    setValue(event.target.value)
+    updateSearchValue(event.target.value)
+  }
+
   return (
     <div className={styles.root}>
       <svg
@@ -44,15 +72,16 @@ const Search = () => {
       </svg>
       {/* контролируемый инпут  value={searchValue} ..двусторонее связывание */}
       <input
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы..."
       />
       {/* Если в searchValue чтото есть то показываем крестик */}
-      {searchValue && (
+      {value && (
         <svg
-          onClick={() => setSearchValue('')}
+          onClick={onClickClear}
           className={styles.clearIcon}
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
