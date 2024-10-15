@@ -8,6 +8,7 @@ import Sort from '../components/Sort'
 import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
 import { SearchContext } from '../App'
+import axios from 'axios'
 
 const Home = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
@@ -37,14 +38,15 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : ''
     const search = searchValue ? `&search=${searchValue}` : ''
 
-    fetch(
-      `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    )
-      .then((res) => res.json())
-      .then((arr) => {
-        setItems(arr)
+    axios
+      .get(
+        `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+      )
+      .then((res) => {
+        setItems(res.data)
         setIsLoading(false)
       })
+
     window.scrollTo(0, 0)
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
