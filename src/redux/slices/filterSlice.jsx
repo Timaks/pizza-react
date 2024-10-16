@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 // initialState - начальное состояние слайса стейта, которое будет загружено при первом запуске приложения
 const initialState = {
   categoryId: 0,
+  currentPage: 1,
   sort: {
     name: 'популярности',
     sortProperty: 'rating',
@@ -21,10 +22,13 @@ const filterSlice = createSlice({
     setSort(state, action) {
       state.sort = action.payload
     },
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload
+    },
   },
 })
 // вытаскиваем то. что в reducers
-export const { setCategoryId, setSort } = filterSlice.actions
+export const { setCategoryId, setSort, setCurrentPage} = filterSlice.actions
 
 // экспортируем reducer - база
 export default filterSlice.reducer

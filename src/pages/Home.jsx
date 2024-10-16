@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setCategoryId } from '../redux/slices/filterSlice'
+import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice'
 import Categories from '../components/Categories'
 import PizzaBlock from '../components/PizzaBlock'
 import Sort from '../components/Sort'
@@ -14,7 +14,7 @@ const Home = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
   const dispatch = useDispatch()
   // useSelector вшит уже useContext
-  const { categoryId, sort } = useSelector((state) => state.filter)
+  const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
 
   // нужен только searchValue для получения данных , изменение не надо
   // Следи за изменением контекста, и перерисуется с новыми данными
@@ -22,12 +22,14 @@ const Home = () => {
   const [items, setItems] = React.useState([])
   const [isLoading, setIsLoading] = React.useState(true)
 
-  const [currentPage, setCurrentPage] = React.useState(1)
-
   // Внутри функции мы вызываем dispatch, формируем объект action, в свойство payload
   // которого у нас попадут сгенерированный id. Все эти данные мы берем из локальных стейтов.
   const onClickCategory = (id) => {
     dispatch(setCategoryId(id))
+  }
+
+  const onChangePage = (number) => {
+    dispatch(setCurrentPage(number))
   }
 
   React.useEffect(() => {
@@ -63,7 +65,7 @@ const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-      <Pagination onChangePage={(number) => setCurrentPage(number)} />
+      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   )
 }
