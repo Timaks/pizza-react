@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import qs from 'qs'
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -20,6 +20,9 @@ const Home = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const isSearch = React.useRef(false)
+  //ОТвечает за первый рендер
+  const isMounted = useRef(false)
 
   // useSelector вшит уже useContext
   const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
@@ -34,26 +37,11 @@ const Home = () => {
     dispatch(setCategoryId(id))
   }
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number))
+  const onChangePage = (page) => {
+    dispatch(setCurrentPage(page))
   }
-  // Достаем ссылки, парсим и превращаем в объект, чтобы передать в redux - dispatch (substring(1) --убираем ?)
-  React.useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1))
-      const sort = sortList.find(
-        (obj) => obj.sortProperty === params.sortProperty
-      )
-      dispatch(
-        setFilters({
-          ...params,
-          sort,
-        })
-      )
-    }
-  }, [])
 
-  React.useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoading(true)
 
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
@@ -69,19 +57,47 @@ const Home = () => {
         setItems(res.data)
         setIsLoading(false)
       })
-
-    window.scrollTo(0, 0)
-  }, [categoryId, sort.sortProperty, searchValue, currentPage])
-
-  //Ссылки на фильры и меню отображаются в url
+  }
+  //Ссылки на фильры и меню отображаются в url (isMounted - первый рендер, нет фильтров в ссылках)
   React.useEffect(() => {
-    const queryString = qs.stringify({
-      sortProperty: sort.sortProperty,
-      categoryId,
-      currentPage,
-    })
-    navigate(`?${queryString}`)
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortProperty: sort.sortProperty,
+        categoryId,
+        currentPage,
+      })
+      navigate(`?${queryString}`)
+    }
+    // useEffect отрабатывает с первым рендером, когда рендер произошел то ставим true, и добавляем парметры к юрл
+    isMounted.current = true
   }, [categoryId, sort.sortProperty, currentPage])
+
+  // Достаем ссылки, парсим и превращаем в объект, чтобы передать в redux - dispatch (substring(1) --убираем ?)
+  // Если был первый рендер, то проверяем url-параметры и сохраняем в redux
+  React.useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1))
+      const sort = sortList.find(
+        (obj) => obj.sortProperty === params.sortProperty
+      )
+      dispatch(
+        setFilters({
+          ...params,
+          sort,
+        })
+      )
+      isSearch.current = true
+    }
+  }, [])
+// Если был первый рендер, то запрашиваем пиццы
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+    // Если сейчас нет поиска по qwery параметрам, то делаем fetch запрос (ждем пока загрузятся данные, смотря есть ли запрос в адресной строке)
+    if (!isSearch.current) {
+      fetchPizzas()
+    }
+    isSearch.current = false
+  }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)
 
