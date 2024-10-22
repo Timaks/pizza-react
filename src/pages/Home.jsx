@@ -57,12 +57,21 @@ const Home = () => {
     //     setItems(res.data)
     //     setIsLoading(false)
     //   })
-// можно записать так,чтобы не использовать then
-    const res = await axios.get(
-      `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    )
-    setItems(res.data)
-    setIsLoading(false)
+    // можно использовать в промисах .then, .catch
+
+    // можно записать так,чтобы не использовать then
+
+    // предотвратить ошибки без промисов оборачиваем в try-catch
+    try {
+      const res = await axios.get(
+        `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+      )
+      setItems(res.data)
+    } catch (error) {
+      console.log('Error', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
   //Ссылки на фильры и меню отображаются в url (isMounted - первый рендер, нет фильтров в ссылках)
   React.useEffect(() => {
