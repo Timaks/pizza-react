@@ -41,7 +41,7 @@ const Home = () => {
     dispatch(setCurrentPage(page))
   }
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true)
 
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
@@ -49,14 +49,20 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : ''
     const search = searchValue ? `&search=${searchValue}` : ''
 
-    axios
-      .get(
-        `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then((res) => {
-        setItems(res.data)
-        setIsLoading(false)
-      })
+    // await axios
+    //   .get(
+    //     `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+    //   )
+    //   .then((res) => {
+    //     setItems(res.data)
+    //     setIsLoading(false)
+    //   })
+// можно записать так,чтобы не использовать then
+    const res = await axios.get(
+      `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+    )
+    setItems(res.data)
+    setIsLoading(false)
   }
   //Ссылки на фильры и меню отображаются в url (isMounted - первый рендер, нет фильтров в ссылках)
   React.useEffect(() => {
@@ -89,7 +95,7 @@ const Home = () => {
       isSearch.current = true
     }
   }, [])
-// Если был первый рендер, то запрашиваем пиццы
+  // Если был первый рендер, то запрашиваем пиццы
   React.useEffect(() => {
     window.scrollTo(0, 0)
     // Если сейчас нет поиска по qwery параметрам, то делаем fetch запрос (ждем пока загрузятся данные, смотря есть ли запрос в адресной строке)
