@@ -14,7 +14,7 @@ import { Sort, sortList } from '../components/Sort'
 import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
 import { SearchContext } from '../App'
-import axios from 'axios'
+import { fetchPizzas } from '../redux/slices/pizzasSlice'
 
 const Home = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
@@ -23,14 +23,13 @@ const Home = () => {
   const isSearch = React.useRef(false)
   //ОТвечает за первый рендер
   const isMounted = useRef(false)
+  const { items, status } = useSelector((state) => state.pizzas)
 
   // useSelector вшит уже useContext
   const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
 
   // нужен только searchValue для получения данных , изменение не надо. Следит за изменением контекста, и перерисуется с новыми данными
   const { searchValue } = React.useContext(SearchContext)
-  const [items, setItems] = React.useState([])
-  const [isLoading, setIsLoading] = React.useState(true)
 
   // Внутри функции мы вызываем dispatch, формируем объект action, в свойство payload которого у нас попадут сгенерированный id. Все эти данные мы берем из локальных стейтов.
   const onClickCategory = (id) => {
@@ -41,37 +40,23 @@ const Home = () => {
     dispatch(setCurrentPage(page))
   }
 
-  const fetchPizzas = async () => {
-    setIsLoading(true)
-
+  const getPizzas = async () => {
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
     const sortBy = sort.sortProperty.replace('-', '')
     const category = categoryId > 0 ? `category=${categoryId}` : ''
     const search = searchValue ? `&search=${searchValue}` : ''
 
-    // await axios
-    //   .get(
-    //     `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    //   )
-    //   .then((res) => {
-    //     setItems(res.data)
-    //     setIsLoading(false)
-    //   })
-    // можно использовать в промисах .then, .catch
-
-    // можно записать так,чтобы не использовать then
-
     // предотвратить ошибки без промисов оборачиваем в try-catch
-    try {
-      const res = await axios.get(
-        `https://66fab3a48583ac93b4098801.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      setItems(res.data)
-    } catch (error) {
-      console.log('Error', error)
-    } finally {
-      setIsLoading(false)
-    }
+
+    dispatch(
+      fetchPizzas({
+        order,
+        sortBy,
+        category,
+        search,
+        currentPage,
+      })
+    )
   }
   //Ссылки на фильры и меню отображаются в url (isMounted - первый рендер, нет фильтров в ссылках)
   React.useEffect(() => {
@@ -109,7 +94,7 @@ const Home = () => {
     window.scrollTo(0, 0)
     // Если сейчас нет поиска по qwery параметрам, то делаем fetch запрос (ждем пока загрузятся данные, смотря есть ли запрос в адресной строке)
     if (!isSearch.current) {
-      fetchPizzas()
+      getPizzas()
     }
     isSearch.current = false
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
@@ -127,7 +112,7 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+      <div className="content__items">{status==='loading' ? skeletons : pizzas}</div>
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   )
