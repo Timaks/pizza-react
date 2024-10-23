@@ -15,6 +15,8 @@ import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
 import { SearchContext } from '../App'
 import { fetchPizzas } from '../redux/slices/pizzasSlice'
+import { selectPizzaData } from '../redux/slices/pizzasSlice'
+import { selectFilter } from '../redux/slices/filterSlice'
 
 const Home = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
@@ -23,10 +25,10 @@ const Home = () => {
   const isSearch = React.useRef(false)
   //ОТвечает за первый рендер
   const isMounted = useRef(false)
-  const { items, status } = useSelector((state) => state.pizzas)
+  const { items, status } = useSelector(selectPizzaData)
 
   // useSelector вшит уже useContext
-  const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
+  const { categoryId, sort, currentPage } = useSelector(selectFilter)
 
   // нужен только searchValue для получения данных , изменение не надо. Следит за изменением контекста, и перерисуется с новыми данными
   const { searchValue } = React.useContext(SearchContext)

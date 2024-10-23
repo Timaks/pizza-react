@@ -32,6 +32,9 @@ const filterSlice = createSlice({
     },
   },
 })
+export const selectSort = (state) => state.filter.sort
+export const selectFilter = (state) => state.filter
+
 // вытаскиваем то. что в reducers
 export const { setCategoryId, setSort, setCurrentPage, setFilters } =
   filterSlice.actions
