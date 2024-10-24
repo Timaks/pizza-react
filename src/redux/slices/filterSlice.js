@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 // начальное состояние и значения по умолчанию
 // initialState - начальное состояние слайса стейта, которое будет загружено при первом запуске приложения
 const initialState = {
+  searchValue: '',
   categoryId: 0,
   currentPage: 1,
   sort: {
@@ -16,6 +17,9 @@ const filterSlice = createSlice({
   initialState,
   //   данные стейта изменяются при помощи редьюсеров (action-действие)
   reducers: {
+    setSearchValue(state, action) {
+      state.searchValue = action.payload
+    },
     setCategoryId(state, action) {
       state.categoryId = action.payload
     },
@@ -36,7 +40,7 @@ export const selectSort = (state) => state.filter.sort
 export const selectFilter = (state) => state.filter
 
 // вытаскиваем то. что в reducers
-export const { setCategoryId, setSort, setCurrentPage, setFilters } =
+export const { setCategoryId, setSort, setCurrentPage, setFilters, setSearchValue } =
   filterSlice.actions
 
 // экспортируем reducer - база

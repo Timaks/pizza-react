@@ -1,21 +1,17 @@
 import React from 'react'
-
+import { useDispatch } from 'react-redux'
+import { setSearchValue } from '../../redux/slices/filterSlice'
 import debounce from 'lodash.debounce'
-import { SearchContext } from '../../App'
-
 import styles from './Seach.module.scss'
 
 const Search = () => {
+  const dispatch = useDispatch()
   // Быстрое отображение данных инпута
   const [value, setValue] = React.useState('')
-
-  // передаем переменную из App ---- отображение данных с поиска
-  const { setSearchValue } = React.useContext(SearchContext)
-
   const inputRef = React.useRef()
 
   const onClickClear = () => {
-    setSearchValue('')
+    dispatch(setSearchValue(''))
     setValue('')
     inputRef.current.focus()
   }
@@ -23,7 +19,7 @@ const Search = () => {
   //React.useCallback вернет функцию... debounce - отложенное выполнение функции
   const updateSearchValue = React.useCallback(
     debounce((str) => {
-      setSearchValue(str)
+      dispatch(setSearchValue(str))
     }, 300),
     // вызываем один раз при рендере(как useEffect)
     []

@@ -13,7 +13,6 @@ import PizzaBlock from '../components/PizzaBlock'
 import { Sort, sortList } from '../components/Sort'
 import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
-import { SearchContext } from '../App'
 import { fetchPizzas } from '../redux/slices/pizzasSlice'
 import { selectPizzaData } from '../redux/slices/pizzasSlice'
 import { selectFilter } from '../redux/slices/filterSlice'
@@ -28,10 +27,8 @@ const Home = () => {
   const { items, status } = useSelector(selectPizzaData)
 
   // useSelector вшит уже useContext
-  const { categoryId, sort, currentPage } = useSelector(selectFilter)
-
-  // нужен только searchValue для получения данных , изменение не надо. Следит за изменением контекста, и перерисуется с новыми данными
-  const { searchValue } = React.useContext(SearchContext)
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter)
 
   // Внутри функции мы вызываем dispatch, формируем объект action, в свойство payload которого у нас попадут сгенерированный id. Все эти данные мы берем из локальных стейтов.
   const onClickCategory = (id) => {
