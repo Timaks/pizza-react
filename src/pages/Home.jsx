@@ -99,6 +99,7 @@ const Home = () => {
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
   const pizzas = items.map((obj) => (
+    // на каждую пиццу заводим ссылку (передаем динамические параметры)
     <Link key={obj.id} to={`pizza/${obj.id}`}>
       <PizzaBlock {...obj} />
     </Link>
