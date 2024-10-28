@@ -26,6 +26,8 @@ const cartSlice = createSlice({
       const findItem = state.items.find((obj) => obj.id === action.payload)
       if (findItem) {
         findItem.count--
+        // добавили чтобы пицца убиралась, доработать чтобы цена тоже уходила
+        state.items = state.items.filter((obj) => obj.count !== 0) 
       }
     },
     removeItem(state, action) {

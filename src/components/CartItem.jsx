@@ -12,7 +12,9 @@ const CartItem = ({ id, title, size, type, price, count, imageUrl }) => {
     )
   }
   const onClickMinus = () => {
-    dispatch(minusItem(id))
+    if (count > 0) {
+      dispatch(minusItem(id))
+    }
   }
   const onClickRemove = () => {
     if (window.confirm('Вы хотите удалить товар?')) {
