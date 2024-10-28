@@ -1,5 +1,11 @@
 import React from 'react'
-function Categories({ value, onClickCategory }) {
+
+type CategoriesProps = {
+  value: number
+  onClickCategory: any
+}
+//  ({ value, onClickCategory }: CategoriesProps) - можно так, но не хороший способ
+const Categories: React.FC<CategoriesProps> = ({ value, onClickCategory }) => {
   const categories = [
     'Все',
     'Мясные',
@@ -10,7 +16,7 @@ function Categories({ value, onClickCategory }) {
   ]
 
   return (
-    <div className='categories'>
+    <div className="categories">
       <ul>
         {categories.map((categoryName, i) => (
           <li
