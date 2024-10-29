@@ -4,28 +4,32 @@ import { setSearchValue } from '../../redux/slices/filterSlice'
 import debounce from 'lodash.debounce'
 import styles from './Seach.module.scss'
 
-const Search = () => {
+const Search: React.FC = () => {
   const dispatch = useDispatch()
   // Быстрое отображение данных инпута
   const [value, setValue] = React.useState('')
-  const inputRef = React.useRef()
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   const onClickClear = () => {
     dispatch(setSearchValue(''))
     setValue('')
-    inputRef.current.focus()
+    // 1 вариант (исп-м 2 вариант c ? - опциональная цепочка)
+    // if (inputRef.current) {
+    //   inputRef.current.focus()
+    // }
+    inputRef.current?.focus()
   }
 
   //React.useCallback вернет функцию... debounce - отложенное выполнение функции
   const updateSearchValue = React.useCallback(
-    debounce((str) => {
+    debounce((str: string) => {
       dispatch(setSearchValue(str))
     }, 300),
     // вызываем один раз при рендере(как useEffect)
     []
   )
 
-  const onChangeInput = (event) => {
+  const onChangeInput = (event: any) => {
     setValue(event.target.value)
     updateSearchValue(event.target.value)
   }

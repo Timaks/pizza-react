@@ -17,7 +17,7 @@ import { fetchPizzas } from '../redux/slices/pizzasSlice'
 import { selectPizzaData } from '../redux/slices/pizzasSlice'
 import { selectFilter } from '../redux/slices/filterSlice'
 
-const Home = () => {
+const Home: React.FC = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -31,11 +31,11 @@ const Home = () => {
     useSelector(selectFilter)
 
   // Внутри функции мы вызываем dispatch, формируем объект action, в свойство payload которого у нас попадут сгенерированный id. Все эти данные мы берем из локальных стейтов.
-  const onClickCategory = (id) => {
-    dispatch(setCategoryId(id))
+  const onClickCategory = (idx: number) => {
+    dispatch(setCategoryId(idx))
   }
 
-  const onChangePage = (page) => {
+  const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page))
   }
 
@@ -48,6 +48,7 @@ const Home = () => {
     // предотвратить ошибки без промисов оборачиваем в try-catch
 
     dispatch(
+      //@ts-ignore
       fetchPizzas({
         order,
         sortBy,
@@ -98,7 +99,7 @@ const Home = () => {
     isSearch.current = false
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
-  const pizzas = items.map((obj) => (
+  const pizzas = items.map((obj: any) => (
     // на каждую пиццу заводим ссылку (передаем динамические параметры)
     <Link key={obj.id} to={`pizza/${obj.id}`}>
       <PizzaBlock {...obj} />
