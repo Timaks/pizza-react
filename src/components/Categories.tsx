@@ -2,7 +2,9 @@ import React from 'react'
 
 type CategoriesProps = {
   value: number
-  onClickCategory: any
+  // стрелочная функция (void - не требует возвращения какого-то значения)
+  //  onClickCategory?: ? - делает необязательным параметром
+  onClickCategory: (i: number) => void
 }
 //  ({ value, onClickCategory }: CategoriesProps) - можно так, но не хороший способ
 const Categories: React.FC<CategoriesProps> = ({ value, onClickCategory }) => {

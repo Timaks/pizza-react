@@ -28,8 +28,8 @@ const Search: React.FC = () => {
     // вызываем один раз при рендере(как useEffect)
     []
   )
-
-  const onChangeInput = (event: any) => {
+  // (event: React.ChangeEvent<HTMLInputElement>)  - понимаем при наведении
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value)
     updateSearchValue(event.target.value)
   }
@@ -74,6 +74,7 @@ const Search: React.FC = () => {
       <input
         ref={inputRef}
         value={value}
+        //  ТУТ при наведении  на onChange=
         onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы..."

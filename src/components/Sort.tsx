@@ -7,6 +7,10 @@ type SortItem = {
   name: string
   sortProperty: string
 }
+// если к типу хочешь прикрутить еще один кастомный тип то &
+type PopupClick = MouseEvent & {
+  path: Node[]
+}
 
 export const sortList: SortItem[] = [
   { name: 'популярности (desc)', sortProperty: 'rating' },
@@ -31,9 +35,11 @@ export function Sort() {
   }
 
   React.useEffect(() => {
-    const handleClickOutside = (event: any) => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // as - переопределяем тип
+      const _event = event as PopupClick
       // если не было клика на sort, то мы закрываем попап
-      if (!event.composedPath().includes(sortRef.current)) {
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
         setOpen(false)
       }
     }
