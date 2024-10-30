@@ -1,6 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { RootState } from '../store'
 
-const initialState = {
+type CartItem = {
+  id: string
+  title: string
+  price: number
+  imageUrl: string
+  size: number
+  type: number
+  count: number
+}
+//type - можем передать что угодно, {}, number, string[]... а interface(чаще для state)-типизирует ТОЛЬКО объект
+
+interface cartSliceState {
+  totalPrice: number
+  items: CartItem[]
+}
+const initialState: cartSliceState = {
   totalPrice: 0,
   items: [],
 }
@@ -27,7 +43,7 @@ const cartSlice = createSlice({
       if (findItem) {
         findItem.count--
         // добавили чтобы пицца убиралась, доработать чтобы цена тоже уходила
-        state.items = state.items.filter((obj) => obj.count !== 0) 
+        state.items = state.items.filter((obj) => obj.count !== 0)
       }
     },
     removeItem(state, action) {
@@ -40,8 +56,8 @@ const cartSlice = createSlice({
   },
 })
 // selector - функция которая может использоваться несколько раз
-export const selectCart = (state) => state.cart
-export const selectCartItemById = (id) => (state) =>
+export const selectCart = (state: RootState) => state.cart
+export const selectCartItemById = (id:string) => (state: RootState) =>
   state.cart.items.find((obj) => obj.id === id)
 
 export const { addItem, removeItem, minusItem, clearItems } = cartSlice.actions

@@ -1,8 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { RootState } from '../store'
 
+type Sort = {
+  name: string
+  sortProperty: 'rating'
+}
+interface filterSliceState {
+  searchValue: string
+  categoryId: number
+  currentPage: number
+  sort: Sort
+}
 // начальное состояние и значения по умолчанию
 // initialState - начальное состояние слайса стейта, которое будет загружено при первом запуске приложения
-const initialState = {
+const initialState: filterSliceState = {
   searchValue: '',
   categoryId: 0,
   currentPage: 1,
@@ -36,12 +47,17 @@ const filterSlice = createSlice({
     },
   },
 })
-export const selectSort = (state) => state.filter.sort
-export const selectFilter = (state) => state.filter
+export const selectSort = (state: RootState) => state.filter.sort
+export const selectFilter = (state: RootState) => state.filter
 
 // вытаскиваем то. что в reducers
-export const { setCategoryId, setSort, setCurrentPage, setFilters, setSearchValue } =
-  filterSlice.actions
+export const {
+  setCategoryId,
+  setSort,
+  setCurrentPage,
+  setFilters,
+  setSearchValue,
+} = filterSlice.actions
 
 // экспортируем reducer - база
 export default filterSlice.reducer
