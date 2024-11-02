@@ -1,7 +1,30 @@
 import axios from 'axios'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../store'
 
-export const fetchPizzas = createAsyncThunk(
+// сокращаем типизацию одинаковых значений на Record (order, sortBy, category, search, currentPage)
+// type FetchPizzasArgs = Record<string, string>
+
+type Pizza = {
+  id: string
+  title: string
+  price: number
+  imageUrl: string
+  sizes: number[]
+  types: number[]
+  rating: number
+}
+interface PizzasSliceState {
+  items: Pizza[]
+  status: 'loading' | 'success' | 'error'
+}
+
+const initialState: PizzasSliceState = {
+  items: [],
+  status: 'loading',
+}
+
+export const fetchPizzas = createAsyncThunk<Pizza[], Record<string, string>>(
   'pizza/fetchPizzasStatus',
   async (params) => {
     const { order, sortBy, category, search, currentPage } = params
@@ -11,25 +34,15 @@ export const fetchPizzas = createAsyncThunk(
     return data
   }
 )
-
-const initialState = {
-  items: [],
-  status: 'loading',
-}
-
 const pizzasSlice = createSlice({
   name: 'pizza',
   initialState,
   reducers: {
-    setItems(state, action) {
+    setItems(state, action: PayloadAction<Pizza[]>) {
       state.items = action.payload
     },
   },
-  // extraReducers: {
-  //   [fetchPizzas.fulfilled]: (state, action) => {
-  //     console.log(state)
-  //   },
-  // },
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchPizzas.pending, (state) => {
@@ -47,7 +60,7 @@ const pizzasSlice = createSlice({
   },
 })
 
-export const selectPizzaData = (state) => state.pizzas
+export const selectPizzaData = (state: RootState) => state.pizzas
 export const { setItems } = pizzasSlice.actions
 
 export default pizzasSlice.reducer
