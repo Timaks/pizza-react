@@ -1,15 +1,25 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 
-type Sort = {
-  name: string
-  sortProperty: 'rating' | 'price' | 'title' | '-rating' | '-price' | '-title'
+export enum SortPropertyEnum {
+  RATING_DESC = 'rating',
+  RATING_ASC = '-rating',
+  TITLE_DESC = 'title',
+  TITLE_ASC = '-title',
+  PRICE_DESC = 'price',
+  PRICE_ASC = '-price',
 }
-interface filterSliceState {
+
+export type Sort = {
+  name: string
+  sortProperty: SortPropertyEnum
+}
+
+export interface filterSliceState {
   searchValue: string
   categoryId: number
   currentPage: number
-  sort: Sort
+  sort: Sort | undefined;
 }
 // начальное состояние и значения по умолчанию
 // initialState - начальное состояние слайса стейта, которое будет загружено при первом запуске приложения
@@ -19,7 +29,7 @@ const initialState: filterSliceState = {
   currentPage: 1,
   sort: {
     name: 'популярности',
-    sortProperty: 'rating',
+    sortProperty: SortPropertyEnum.RATING_DESC,
   },
 }
 // сам слайс, тут логика обработки наших данных

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import qs from 'qs'
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   setCategoryId,
@@ -10,16 +10,17 @@ import {
 } from '../redux/slices/filterSlice'
 import Categories from '../components/Categories'
 import PizzaBlock from '../components/PizzaBlock'
-import { Sort, sortList } from '../components/Sort'
+import Sort, { sortList } from '../components/Sort'
 import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
-import { fetchPizzas } from '../redux/slices/pizzasSlice'
+import { fetchPizzas, SearchPizzaParams } from '../redux/slices/pizzasSlice'
 import { selectPizzaData } from '../redux/slices/pizzasSlice'
 import { selectFilter } from '../redux/slices/filterSlice'
+import { useAppDispatch } from '../redux/store'
 
 const Home: React.FC = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const isSearch = React.useRef(false)
   //ОТвечает за первый рендер
@@ -54,7 +55,7 @@ const Home: React.FC = () => {
         sortBy,
         category,
         search,
-        currentPage,
+        currentPage: String(currentPage),
       })
     )
   }
@@ -76,14 +77,14 @@ const Home: React.FC = () => {
   // Если был первый рендер, то проверяем url-параметры и сохраняем в redux
   React.useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1))
-      const sort = sortList.find(
-        (obj) => obj.sortProperty === params.sortProperty
-      )
+      const params = qs.parse(
+        window.location.search.substring(1)
+      ) as unknown as SearchPizzaParams
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortBy)
       dispatch(
         setFilters({
           ...params,
-          sort,
+          sort: sort | sortList[0],
         })
       )
       isSearch.current = true
@@ -105,20 +106,23 @@ const Home: React.FC = () => {
       <PizzaBlock {...obj} />
     </Link>
   ))
+  // React.useEffect(() => {
+  //   getPizzas()
+  // }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ))
   return (
-    <div className="container">
-      <div className="content__top">
+    <div className='container'>
+      <div className='content__top'>
         {/* можно назвать как угодно i */}
         <Categories value={categoryId} onClickCategory={onClickCategory} />
         <Sort />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
+      <h2 className='content__title'>Все пиццы</h2>
       {status === 'error' ? (
-        <div className="content__error-info">
+        <div className='content__error-info'>
           <h2>Произошла ошибка 😕</h2>
           <p>
             К сожалению, не удалось получить пиццы. Попробуйте повторить попытку
@@ -126,7 +130,7 @@ const Home: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div className="content__items">
+        <div className='content__items'>
           {status === 'loading' ? skeletons : pizzas}
         </div>
       )}
