@@ -1,31 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store'
-import { getCartFromLS } from '../../utils/getCartFromLS'
-import { calcTotalPrice } from '../../utils/calcTotalPrice'
+import { CartItem, cartSliceState } from './types'
+import { getCartFromLS } from '../../../utils/getCartFromLS'
+import { calcTotalPrice } from '../../../utils/calcTotalPrice'
+import { RootState } from '../../store'
 
-export type CartItem = {
-  id: string
-  title: string
-  price: number
-  imageUrl: string
-  size: number
-  type: string
-  count: number
-}
-//type - можем передать что угодно, {}, number, string[]... а interface(чаще для state)-типизирует ТОЛЬКО объект
-
-interface cartSliceState {
-  totalPrice: number
-  items: CartItem[]
-}
-
-const { items, totalPrice } = getCartFromLS()
-
-const initialState: cartSliceState = {
-  totalPrice,
-  //вызывается в первый раз когда приложение создастся
-  items,
-}
+const initialState: cartSliceState = getCartFromLS()
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -61,8 +40,6 @@ const cartSlice = createSlice({
 })
 // selector - функция которая может использоваться несколько раз
 export const selectCart = (state: RootState) => state.cart
-export const selectCartItemById = (id: string) => (state: RootState) =>
-  state.cart.items.find((obj) => obj.id === id)
 
 export const { addItem, removeItem, minusItem, clearItems } = cartSlice.actions
 

@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { Sort } from './filterSlice'
 
 // сокращаем типизацию одинаковых значений на Record (order, sortBy, category, search, currentPage)
 // type FetchPizzasArgs = Record<string, string>

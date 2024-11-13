@@ -4,9 +4,7 @@ import { useSelector } from 'react-redux'
 
 import logoPizza from '../assets/img/pizza-logo.svg'
 import Search from './Search'
-import { selectCart } from '../redux/slices/cartSlice'
-
-//два способ передать лого, через папку public/img или же импорт
+import { selectCart } from '../redux/slices/cart/slice'
 
 function Header() {
   //Пробуем useLocation на изменение ссылок и внешнего вида(убираем корзину) Можно не использовать в этом проекте
@@ -19,12 +17,11 @@ function Header() {
   const isMounted = React.useRef(false)
 
   React.useEffect(() => {
-    if(isMounted.current){
-       const json = JSON.stringify(items)
-    localStorage.setItem('cart', json)
+    if (isMounted.current) {
+      const json = JSON.stringify(items)
+      localStorage.setItem('cart', json)
     }
-    isMounted.current=true
-   
+    isMounted.current = true
   }, [items])
 
   return (
