@@ -2,16 +2,17 @@ import React, { useRef } from 'react'
 import qs from 'qs'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice'
+
 import Categories from '../components/Categories'
 import PizzaBlock from '../components/PizzaBlock'
 import Sort, { sortList } from '../components/Sort'
 import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
-import { fetchPizzas, SearchPizzaParams } from '../redux/slices/pizzasSlice'
+import { fetchPizzas } from '../redux/slices/pizzasSlice'
 import { selectPizzaData } from '../redux/slices/pizzasSlice'
-import { selectFilter } from '../redux/slices/filterSlice'
 import { useAppDispatch } from '../redux/store'
+import { selectFilter } from '../redux/slices/filter/selector'
+import { setCategoryId, setCurrentPage } from '../redux/slices/filter/slice'
 
 const Home: React.FC = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
@@ -111,15 +112,15 @@ const Home: React.FC = () => {
   ))
 
   return (
-    <div className="container">
-      <div className="content__top">
+    <div className='container'>
+      <div className='content__top'>
         {/* можно назвать как угодно i */}
         <Categories value={categoryId} onClickCategory={onClickCategory} />
         {sort && <Sort value={sort} />}
       </div>
-      <h2 className="content__title">Все пиццы</h2>
+      <h2 className='content__title'>Все пиццы</h2>
       {status === 'error' ? (
-        <div className="content__error-info">
+        <div className='content__error-info'>
           <h2>Произошла ошибка 😕</h2>
           <p>
             К сожалению, не удалось получить пиццы. Попробуйте повторить попытку
@@ -127,7 +128,7 @@ const Home: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div className="content__items">
+        <div className='content__items'>
           {status === 'loading' ? skeletons : pizzas}
         </div>
       )}
