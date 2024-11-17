@@ -13,3 +13,11 @@ export interface cartSliceState {
   totalPrice: number
   items: CartItem[]
 }
+
+export type SearchPizzaParams = {
+    sortBy: string
+    order: string
+    category: string
+    search: string
+    currentPage: string
+  }

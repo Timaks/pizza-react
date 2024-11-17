@@ -1,18 +1,18 @@
 import React, { useRef } from 'react'
-import qs from 'qs'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import Categories from '../components/Categories'
 import PizzaBlock from '../components/PizzaBlock'
-import Sort, { sortList } from '../components/Sort'
+import Sort from '../components/Sort'
 import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
-import { fetchPizzas } from '../redux/slices/pizzasSlice'
-import { selectPizzaData } from '../redux/slices/pizzasSlice'
+
 import { useAppDispatch } from '../redux/store'
 import { selectFilter } from '../redux/slices/filter/selector'
 import { setCategoryId, setCurrentPage } from '../redux/slices/filter/slice'
+import { selectPizzaData } from '../redux/slices/pizza/selector'
+import { fetchPizzas } from '../redux/slices/pizza/asyncAction'
 
 const Home: React.FC = () => {
   // единственный способ изменить state - это вызвать метод dispatch, который есть у store и передать объект action
