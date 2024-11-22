@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
 import Home from './pages/Home'
-import NotFound from './pages/NotFound'
 import './scss/app.scss'
 import { Routes, Route } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
+import { NotFound } from './pages/NotFound'
 
 const Cart = React.lazy(
   () => import(/* webpackChunkName: "Cart" */ './pages/Cart')

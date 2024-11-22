@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce'
 import styles from './Seach.module.scss'
 import { setSearchValue } from '../../redux/slices/filter/slice'
 
-const Search: React.FC = () => {
+export const Search: React.FC = () => {
   const dispatch = useDispatch()
   // Быстрое отображение данных инпута
   const [value, setValue] = React.useState('')
@@ -94,4 +94,4 @@ const Search: React.FC = () => {
   )
 }
 
-export default Search
+

@@ -1,8 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Sort, SortPropertyEnum } from '../redux/slices/filter/types'
+import { SortPropertyEnum, SortType } from '../redux/slices/filter/types'
 import { setSort } from '../redux/slices/filter/slice'
-
 
 // сознаем тип объекта во избежания будущих ошибок
 type SortItem = {
@@ -15,7 +14,7 @@ type SortItem = {
 //   path: Node[]
 // }
 type SortPopupProps = {
-  value: Sort
+  value: SortType
 }
 
 export const sortList: SortItem[] = [
@@ -27,7 +26,7 @@ export const sortList: SortItem[] = [
   { name: 'алфавиту (ASC)', sortProperty: SortPropertyEnum.TITLE_ASC },
 ]
 //memo - позволяет пропустить повторную отрисовку компонента, если его свойства не изменились
-export const SortPopup: React.FC<SortPopupProps> = React.memo(({ value }) => {
+export const Sort: React.FC<SortPopupProps> = React.memo(({ value }) => {
   const dispatch = useDispatch()
   //<HTMLDivElement>(null) - или элемент или null отображается HTMLDivElement когда наводим на элемент с ошибкой, у каждого тега свой
   const sortRef = React.useRef<HTMLDivElement>(null)
@@ -92,4 +91,3 @@ export const SortPopup: React.FC<SortPopupProps> = React.memo(({ value }) => {
     </div>
   )
 })
-export default SortPopup

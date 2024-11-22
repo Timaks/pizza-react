@@ -2,11 +2,7 @@ import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import Categories from '../components/Categories'
-import PizzaBlock from '../components/PizzaBlock'
-import Sort from '../components/Sort'
-import Skeleton from '../components/PizzaBlock/skeleton'
-import Pagination from '../components/Pagination'
+import { Categories,  PizzaBlock, Skeleton, Pagination, Sort } from '../components';
 
 import { useAppDispatch } from '../redux/store'
 import { selectFilter } from '../redux/slices/filter/selector'

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { filterSliceState, Sort, SortPropertyEnum } from './types'
+import { filterSliceState,  SortPropertyEnum, SortType } from './types'
 
 // начальное состояние и значения по умолчанию
 // initialState - начальное состояние слайса стейта, которое будет загружено при первом запуске приложения
@@ -24,7 +24,7 @@ const filterSlice = createSlice({
     setCategoryId(state, action: PayloadAction<number>) {
       state.categoryId = action.payload
     },
-    setSort(state, action: PayloadAction<Sort>) {
+    setSort(state, action: PayloadAction<SortType>) {
       state.sort = action.payload
     },
     setCurrentPage(state, action: PayloadAction<number>) {
